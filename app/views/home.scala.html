@@ -1,57 +1,47 @@
 @()
 <html>
 	<head>
+		<!--<h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce velit ligula, tempor vitae neque et, luctus venenatis tortor. Sed eget ipsum luctus, laoreet neque et, fringilla urna. Phasellus ut ipsum egestas risus posuere egestas vitae in nulla. Fusce eu bibendum augue, ac faucibus urna. Duis vehicula volutpat tortor in varius. Morbi congue massa vel magna interdum scelerisque. Donec nec erat pharetra, laoreet metus in, consequat purus. Etiam ex est, porta id nisl ut, scelerisque lacinia ex. Ut aliquet magna lorem, sit amet mattis est dictum ac. Etiam mollis mattis gravida. Integer et rutrum ipsum. Ut laoreet vulputate lorem non rutrum. Proin quis libero at ante consectetur mattis eget sed velit. Ut nisl est, finibus a eleifend vel, fermentum eu tortor. Aenean vel sagittis ante. Mauris sed nisl at risus tristique sodales. Duis dignissim turpis vel urna varius, ut tempor dui consectetur. Sed convallis, nisi porta pulvinar varius, dolor libero imperdiet metus, mattis malesuada augue erat sit amet tortor. Suspendisse congue rhoncus nulla vitae tempus.</h1>--!>
 		<style>
 			body {
 				background-color: rgb(135, 206, 235);
 				margin: 0;
+				-webkit-perspective: 0px;
+				perspective: 0px;
 			}
 			.wrap {
 				-webkit-transform-style: preserve-3d;
 				transform-style: preserve-3d;
-				-webkit-transform-origin: 50% 50% 0%;
-				transform-origin: 50% 50% 0%;
-				width: 100%;
-				height: 100%;
 				position: fixed;
-				-webkit-perspective: -750px;
-				perspective: -750px;
-				-webkit-perspective-origin: 50%;
-				perspective-origin: 50%;
 			}
 			div:not(.wrap) {
+				border-color: black;
+				border-style: solid;
+				border-width: 2px;
 				background-color: white;
-				width: calc(100% - 10px);
-				height: calc(100% - 10px);
-				margin: 5px;
+				width: 100%;
+				height: 100%;
 				overflow: auto;
 			}
-			@@keyframes first2 {
-				0% {transform:rotateX(0deg);}
-				100% { transform: rotateX(89deg);}
-			}
 			@@keyframes last2 {
-				0% {transform: rotateX(89deg);}
-				100% { transform: rotateX(0deg);}
+				0% {transform: scale(1,1) rotateX(90deg);}
+				25% {transform: scale(0.75,0.75) rotateX(90deg);}
+				75% {transform: rotateX(0deg) scale(0.75,0.75);}
+				100% { transform: scale(1,1) rotateX(0deg);}
 			}
 			.wrap2 {
-				transform: rotateX(89deg);
-				animation-name: first2;
-				animation-duration: 3s;
+				transform: rotateX(90deg);
+				animation-name: last2;
+				animation-duration: 2s;
+				animation-direction: reverse;
+			}
+			.wrap3 {
+				transform: rotateX(90deg);
 			}
 			.wrap1 {
 				transform: rotateX(0deg);
 				animation-name: last2;
-				animation-duration: 3s;
-			}
-			.contact {
-				left: -90%;
-				bottom: -100%;
-			}
-			.created {
-				height: 10%;
-				left: -90%;
-				bottom: -100%;
+				animation-duration: 2s;
 			}
 		</style>
 		<style id="dynamic">
@@ -63,8 +53,11 @@
 				var w = window.innerWidth;
 				var w2 = w/2;
 				var h = window.innerHeight;
-				var h2 = h/2;
-				var dyncss = ".attention {\n-webkit-transform: translateZ("+h2+"px);\ntransform: translateZ("+h2+"px);\n}\n.pricing {\n-webkit-transform: rotateX(-90deg) translateZ(-"+h2+"px);\ntransform: rotateX(-90deg) translateZ(-"+h2+"px);\n}";
+				var h3 = h/1.1;
+				var w3 = (w/2)-(h3/2);
+				var h4 = (h/2)-(h3/2);
+				var h2 = h3/2;
+				var dyncss = ".wrap {\nwidth: "+h3+"px; height: "+h3+"px; left: "+w3+"px; top: "+h4+"px;\n}\n.attention {\n-webkit-transform: translateZ("+h2+"px);\ntransform: translateZ("+h2+"px);\n}\n.pricing {\n-webkit-transform: rotateX(-90deg) translateZ(-"+h2+"px);\ntransform: rotateX(-90deg) translateZ(-"+h2+"px);\n}";
 				dyn.innerHTML = dyncss;
 			}
 			updateSizes();
@@ -72,10 +65,12 @@
 		</script>
 		<script>
 			function onClickAtt() {
-				document.getElementsByClassName("wrap")[0].className = "wrap wrap2";
+				document.getElementsByClassName("wrap")[0].className = "wrap";
+				setTimeout(function(){document.getElementsByClassName("wrap")[0].className = "wrap wrap2";}, 100);
 			}
 			function onClickPri() {
-				document.getElementsByClassName("wrap")[0].className = "wrap wrap1";
+				document.getElementsByClassName("wrap")[0].className = "wrap wrap3";
+				setTimeout(function(){document.getElementsByClassName("wrap")[0].className = "wrap wrap1";}, 100);
 			}
 		</script>
 	</head>
@@ -90,7 +85,7 @@
 				<h2>And once I do, I can even help you with hosting the website!</h2>
 				<h2>So how about it, I build your website and help you put it on the internet. Sounds good to me!</h2>
 				<h2>So lets go!</h2>
-				<button onclick="onClickAtt();">Continue</button>
+				<button onclick="onClickAtt();">Continue</button> 
 			</div>
 			<div class="pricing">
 				<button onclick="onClickPri();">Back</button>
@@ -110,22 +105,4 @@
 			</div>
 		</div>
 	</body>
-	<script>//document.getElementById("body").style.height = window.innerHeight*3;</script>
-	<!--<script>
-		window.requestAnimationFrame = function(f){setTimeout(f, 1000/60)};
-		var attention = document.getElementsByClassName("attention")[0];
-		var pricing = document.getElementsByClassName("pricing");
-		var contact = document.getElementsByClassName("contact");
-		var created = document.getElementsByClassName("created");
-		function update() {
-			var scrolltop = window.pageYOffset;
-			var scrollheight = document.body.scrollHeight;
-			var windowheight = window.innerHeight;
-			var scrollamount = (scrolltop / (scrollheight-windowheight)) * 100;
-			var scroll2 = (scrollamount-50)*1.8;
-			var percent = 100*(scroll2/windowheight)
-			attention.style.MozTransform = "rotateX("+scroll2+"deg) translateY("+percent+"px)";
-		}
-		//window.addEventListener("scroll", function(){window.requestAnimationFrame(update)}, false);
-	</script>--!>
 </html>
